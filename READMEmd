@@ -1,0 +1,12 @@
+# Real-Time Sign Language Translator 🤟
+
+An AI-powered application that translates sign language gestures into text in real-time using computer vision and deep learning.
+
+## Tech Stack
+- Python
+- OpenCV
+- TensorFlow / PyTorch
+- MediaPipe
+
+## Status
+🚧 Project Initialization Phase
