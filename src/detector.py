@@ -16,22 +16,28 @@ class HandDetector:
         )
         self.mp_draw = mp.solutions.drawing_utils
 
-    def detect_hands(self, frame):
-        """
-        Detect hands and draw landmarks
-        """
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.hands.process(rgb_frame)
+def detect_hands(self, frame):
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = self.hands.process(rgb_frame)
 
-        landmark_list = []
+    landmark_list = []
 
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                self.mp_draw.draw_landmarks(
-                    frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS
-                )
+    if results.multi_hand_landmarks:
+        for hand_landmarks in results.multi_hand_landmarks:
+            self.mp_draw.draw_landmarks(
+                frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS
+            )
 
-                for lm in hand_landmarks.landmark:
-                    landmark_list.append((lm.x, lm.y, lm.z))
+            for lm in hand_landmarks.landmark:
+                landmark_list.append([lm.x, lm.y, lm.z])
 
-        return frame, landmark_list
+        # Normalize landmarks (relative positioning)
+        base_x, base_y, base_z = landmark_list[0]
+
+        normalized_landmarks = []
+        for x, y, z in landmark_list:
+            normalized_landmarks.extend([x - base_x, y - base_y, z - base_z])
+
+        return frame, normalized_landmarks
+
+    return frame, []
